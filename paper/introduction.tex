@@ -1,0 +1,58 @@
+\documentclass{article}
+
+\begin{document}
+\chapter{Introduction}
+
+With the advent of Chisel and Rocket Chip we can do a good job producing many
+RTL-level designs.  Unfortunately we're still a bit stuck in the past when it
+comes to VLSI flows: even at Berkeley where we build lots of chips, it still
+takes a year or more to re-spin a new design, even one that's very similar to
+the old one.  These turnaround times make it impossible to do computer
+architecture research using the VLSI flows used to build chips, which is a
+major pain on both ends. 
+
+\section{History}
+
+After becoming frustrated working on multiple failed tapeouts I decided to
+build a new VLSI flow that's explicitly designed to be portable.  The
+original goal was to produce a VLSI flow that was sufficient to build the
+sort of test chips we build at Berkeley, but also malleable enough to be used
+for computer architecture research.
+
+I set about producing a VLSI flow that met my needs.  Specifically my goal
+when designing chips was to change from a mentality of building one specific
+design to one of building many designs at once.
+
+The original version of this VLSI flow was used in a single tapeout on TSMC's
+16nm FinFET technology, but it was a big mess.  After this tapeout I decided
+there were too many political problems preventing the original goal from
+being possible, so I instead decided to retool this project as a tool for
+computer architecture research.
+
+\section{Related Work}
+
+\TODO{I don't know of any related work...}
+
+I think the differences are:
+
+\begin{itemize}
+\item This uses real technologies, real CAD tools, and real RTL designs.
+\item This flow is pretty close to producing a chip, just not one that's
+suitable for circuits research projects.
+\item This flow is designed to support multiple technologies, tools, and
+designs.
+\item This flow is open source.
+\end{itemize}
+
+I think what it boils down to is that the people doing circuits research
+don't have the right goals to produce a flow like this, since they're focused
+on building one chip at a time.  The people doing computer architecture
+research usually don't even have RTL, and if they have VLSI results at all
+they're usually a big mess and not something that's possible to be released
+or used by others.
+
+\section{Sponsors and Such}
+
+\TODO{I never know what to put here.}
+
+\end{document}

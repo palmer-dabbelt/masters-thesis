@@ -1,0 +1,69 @@
+\documentclass{article}
+
+\begin{document}
+\chapter{Implementation}
+
+This chapter describes PLSI's implementation.  I'll start with a bit of the
+philophisy behind producing a portable flow.
+
+\section{PLSI Makefiles}
+
+Nobody knows anything about \texttt{make}, and I'm not entirely sure why.  It
+seems like lots of people either go and re-invent \texttt{make} just because
+they weren't aware it's possible to implement something in \texttt{make}, or
+just don't understand the concept of dependencies.  I thought I'd spend a
+section here describing:
+
+\begin{itemize}
+\item What ``\$@'' does
+\item Why you should write Makefiles that check error messages and have
+dependencies.
+\item How I went about writing Makefiles that actually work.
+\end{itemize}
+
+\section{pcad}
+
+One of the things I wanted to do as part of the big rewrite was to
+essentially start writing my own CAD tools.  The idea here is that the
+commercial CAD tools are both awesome (ie, DC is magic about QoR stuff) and
+horrible (they don't do simple things like allowing for
+technology-independent macro mapping).  This section will describe how pcad
+is implemented, with the first 
+
+\subsection{Intermediate Representation}
+
+I spent a lot of time when writing libflo figuring out how to produce
+type-safe IRs that could be manipulated by multiple tools, without resorting
+to the sort of hacks that FIRRTL needs to.  Here I'll describe how I write
+IRs using C++ templates, why the other versions are garbage, and how the
+match stuff works for me.
+
+\subsection{Macro Compiler}
+
+One big chunk of code is the pcad macro compiler, which I think is something
+other people should really be using.  As far as I know there really isn't
+anything else out there like it: Synopsys doesn't do this, and it blows
+Yunsup's stuff ou of the water.
+
+\subsection{Technology Mapping}
+
+pcad enforces the split between technology-independent models and
+technology-dependent models/implementations.  This is one of the mechanisms
+by which PLSI attempts to maintain portability: there must be a
+technology-independent implementation of every macro, and that must simulate
+correctly.
+
+\section{Floorplanning}
+
+Since I'm going to throw all this away at the end of the thesis, I'm not
+going to bother re-implementing the floorplanning stuff in pcad.
+
+\section{Verification}
+
+PLSI integrates verification very tightly into the design workflow.  It goes
+so far as to use some very complicated \texttt{make} mechanisms (ones that are
+explicitly designed to be hard enough that circuits people can't disable
+them) to enforce that you actually run the tests, as I've found that unless
+you force people to test their stuff they'll just lie about it working.
+
+\end{document}
