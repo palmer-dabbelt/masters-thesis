@@ -1,0 +1,5 @@
+/obj
+*.swp
+.tek_cache
+/paper/*.pdf
+/paper/Makefile

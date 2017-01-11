@@ -1,0 +1,6 @@
+[submodule "plsi"]
+	path = plsi
+	url = git://github.com/ucb-bar/plsi.git
+[submodule "src/tek"]
+	path = src/tek
+	url = git://github.com/palmer-dabbelt/tek.git
