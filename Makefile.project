@@ -1,17 +1,22 @@
 # PLSI-specific variables
 SIMULATOR = vcs
+SYNTHESIS_TOOL = dc
+PAR_TOOL = icc
 
 # The ASPIRE machines install the tools in /ecad, so link those up.
 ifneq (,$(wildcard /ecad/tools/synopsys))
 SYNOPSYS_HOME = /ecad/tools/synopsys
 SYNOPSYS_RM_DIR = /ecad/tools/synopsys/rmgen
+SAED32_TARBALL_DIR = /ecad/stdcells/saed32
 endif
 
 # Use the latest versions of the various Synopsys tools
 VCS_VERSION = L-2016.06-1
+DC_VERSION = L-2016.03-SP1
+ICC_VERSION = L-2016.03-SP1
 
 # These link to the license servers
 MGLS_LICENSE_FILE = 1717@bwrcflex-1.eecs.berkeley.edu:1717@bwrcflex-2.eecs.berkeley.edu
-export MGSL_LICENSE_FILE
+export MGLS_LICENSE_FILE
 SNPSLMD_LICENSE_FILE = 27005@scotland.eecs.berkeley.edu
 export SNPSLMD_LICENSE_FILE
