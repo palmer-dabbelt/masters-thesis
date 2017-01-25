@@ -5,7 +5,9 @@ else
 TEK_BIN = obj/install/tek/bin/tek
 endif
 
-# The whole point of this repository is to build a thesis.
+# The whole point of this repository is to build a thesis.  This builds the
+# thesis using tek, builds tek using pconfigure, and uses PLSI to build
+# pconfigure.
 thesis: paper/masters-thesis.pdf
 
 paper/masters-thesis.pdf: \
@@ -27,3 +29,6 @@ obj/build/tek/Makefile: \
 		$(shell find src/tek -type f)
 	@mkdir -p $(dir $@)
 	cd $(dir $@) && $(abspath $<) --srcpath "$(abspath src/tek)" "PREFIX = $(abspath obj/install/tek)"
+
+plsi/obj/tools/install/pconfigure/bin/pconfigure:
+	$(MAKE) -C plsi obj/tools/install/pconfigure/bin/pconfigure
