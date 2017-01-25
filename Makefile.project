@@ -8,12 +8,24 @@ ifneq (,$(wildcard /ecad/tools/synopsys))
 SYNOPSYS_HOME = /ecad/tools/synopsys
 SYNOPSYS_RM_DIR = /ecad/tools/synopsys/rmgen
 SAED32_TARBALL_DIR = /ecad/stdcells/saed32
-endif
 
-# Use the latest versions of the various Synopsys tools
 VCS_VERSION = L-2016.06-1
 DC_VERSION = L-2016.03-SP1
 ICC_VERSION = L-2016.03-SP1
+endif
+
+# The BWRC machines have everything installed in other places.
+ifneq (,$(wildcard /tools/commercial/synopsys))
+SYNOPSYS_HOME = /tools/commercial/synopsys
+SYNOPSYS_RM_DIR = /tools/designs/palmer.dabbelt/keep/plsi-cache/synopsys-rm
+SAED32_TARBALL_DIR = /tools/designs/palmer.dabbelt/keep/plsi-cache/saed32
+
+VCS_VERSION = K-2015.09-SP1-1
+DC_VERSION = K-2015.06-SP2-1
+ICC_VERSION = K-2015.06-SP2
+endif
+
+# Use the latest versions of the various Synopsys tools
 
 # These link to the license servers
 MGLS_LICENSE_FILE = 1717@bwrcflex-1.eecs.berkeley.edu:1717@bwrcflex-2.eecs.berkeley.edu
