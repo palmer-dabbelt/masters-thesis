@@ -1,3 +1,5 @@
+CONFIGURATIONS = tsmc28hpm-rocketchip-DefaultConfig
+
 # Find some tools
 ifneq (,$(wildcard /usr/bin/tek))
 TEK_BIN = /usr/bin/tek
@@ -12,6 +14,7 @@ thesis: paper/masters-thesis.pdf
 
 paper/masters-thesis.pdf: \
 		$(TEK_BIN) \
+		$(patsubst %,paper/results/%.qor,$(CONFIGURATIONS)) \
 		paper/Makefile
 	$(MAKE) PATH="$(abspath $(dir $<)):$(PATH)" -C $(dir $@) $(notdir $@)
 	touch --no-create $@
@@ -32,3 +35,11 @@ obj/build/tek/Makefile: \
 
 plsi/obj/tools/install/pconfigure/bin/pconfigure:
 	$(MAKE) -C plsi obj/tools/install/pconfigure/bin/pconfigure
+
+# This pattern rule builds a single configuration.  There's also some rules to pull
+results/%/stamp:
+	$(MAKE) -C plsi TECHNOLOGY=$(word 1,$(subst -, ,$(patsubst results/%/stamp,%,$@))) CORE_GENERATOR=$(word 2,$(subst -, ,$(patsubst results/%/stamp,%,$@))) CORE_CONFIG=$(word 3,$(subst -, ,$(patsubst results/%/stamp,%,$@))) par-verilog
+	date > $@
+
+paper/results/%.qor: results/%/stamp
+	touch -c $@
