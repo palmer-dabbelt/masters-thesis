@@ -1,4 +1,4 @@
-CONFIGURATIONS = tsmc28hpm-rocketchip-DefaultConfig
+CONFIGURATIONS = saed32-rocketchip-DefaultConfig
 
 # Find some tools
 ifneq (,$(wildcard /usr/bin/tek))
