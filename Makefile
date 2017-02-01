@@ -26,6 +26,7 @@ paper/Makefile: \
 
 obj/install/tek/bin/tek: obj/build/tek/Makefile
 	$(MAKE) -C $(dir $<) install
+	touch -c $@
 
 obj/build/tek/Makefile: \
 		plsi/obj/tools/install/pconfigure/bin/pconfigure \
