@@ -1,4 +1,6 @@
-CONFIGURATIONS = saed32-rocketchip-DefaultConfig
+CONFIGURATIONS += saed32-rocketchip-DefaultConfig
+CONFIGURATIONS += saed32-boom-SmallBOOMConfig
+CONFIGURATIONS += saed32-hwacha-HwachaConfig
 
 # Find some tools
 ifneq (,$(wildcard /usr/bin/tek))
@@ -35,10 +37,10 @@ obj/build/tek/Makefile: \
 	cd $(dir $@) && $(abspath $<) --srcpath "$(abspath src/tek)" "PREFIX = $(abspath obj/install/tek)"
 
 plsi/obj/tools/install/pconfigure/bin/pconfigure:
-	$(MAKE) -C plsi obj/tools/install/pconfigure/bin/pconfigure
+	$(MAKE) TECHNOLOGY=saed32 -C plsi obj/tools/install/pconfigure/bin/pconfigure
 
 # This pattern rule builds a single configuration.  There's also some rules to pull
-results/%/stamp:
+results/%/stamp: plsi/obj/tools/install/pconfigure/bin/pconfigure
 	$(MAKE) -C plsi TECHNOLOGY=$(word 1,$(subst -, ,$(patsubst results/%/stamp,%,$@))) CORE_GENERATOR=$(word 2,$(subst -, ,$(patsubst results/%/stamp,%,$@))) CORE_CONFIG=$(word 3,$(subst -, ,$(patsubst results/%/stamp,%,$@))) par-verilog
 	date > $@
 

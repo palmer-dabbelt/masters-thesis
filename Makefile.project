@@ -1,3 +1,6 @@
+ADDONS_DIR = ../addons
+CONFIG_DIR = ../configs
+
 # PLSI-specific variables
 SIMULATOR = vcs
 SYNTHESIS_TOOL = dc

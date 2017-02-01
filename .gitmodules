@@ -4,3 +4,9 @@
 [submodule "src/tek"]
 	path = src/tek
 	url = git://github.com/palmer-dabbelt/tek.git
+[submodule "addons/core-generator/boom/src/rocket-chip"]
+	path = addons/core-generator/boom/src/rocket-chip
+	url = git://github.com/ucb-bar/rocket-chip.git
+[submodule "addons/core-generator/hwacha/src/rocket-chip"]
+	path = addons/core-generator/hwacha/src/rocket-chip
+	url = git://github.com/ucb-bar/rocket-chip.git
