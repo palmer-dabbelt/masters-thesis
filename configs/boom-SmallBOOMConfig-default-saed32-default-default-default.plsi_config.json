@@ -2,8 +2,8 @@
   "clocks": [
     {
       "name": "clock",
-      "period": "1250ps",
-      "par derating": "250ps"
+      "period": "1600ps",
+      "par derating": "400ps"
     }
   ],
   "scenerios": [
