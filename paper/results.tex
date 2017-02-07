@@ -3,50 +3,31 @@
 \begin{document}
 \chapter{Results}
 
-A thesis needs some numbers (even though the hypothesis here is just that
-``it's possible to produce this many numbers'').
+\section{Portability}
 
-\section{Benchmark Designs}
+The point of PLSI is to be portable in two dimmensions: 
 
-All the benchmark designs I'll be running will be based on Rocket Chip.  I'm
-going to use three cores: Rocket, BOOM, and Hwacha; three technologies:
-Synopsys 32nm EDK, TSMC 28HPM, and TSMC 16 FinFTE; and one CAD tool vendor:
-Synopsys.  I looked at doing Cadence as well but it doesn't seem worth it
-because the BWRC people won't give me any support (it just SEGVs when trying to
-read some files and they won't install a new version).  If Bora makes too big
-of a mess then I also have TSMC 40G+, some TSMC 65nm process, and a 180nm from
-MOSIS/Oaklohoma State.
+\subsection{Portability to Multiple Technologies}
 
-\section{Benchmark Software}
 
-I'm going to kind of half-ass this here because I just want this to be done:
-I'm just going to run the stuff in \texttt{riscv-benchmarks}.  That means DGEMM
-and friends, nothing like SPEC.  I figure since the goal here is showing the
-VLSI flow and not arguing for a particular architectural feature it'll be OK.
-My out is going to be that SPEC takes a long time to run but with the magic
-simulator stuff we'd be able to run it.
+\subsection{Portability to Multiple Cores}
 
-\section{Benchmark Methodology}
+\subsection{An Example Parametric Study}
 
-It's essentially just: run the benchmarks in RTL simulation to get cycle
-counts, run the VLSI flow to get post-PNR RC numbers, and then run
-PrimeTime-Power to get the energy results.
+\section{Quality of Results}
 
-\section{Benchmark Results}
+\subsection{Comparison with Existing Chips}
 
-Here I would like to present scatter plots of the various designs on all the
-technologies, answering those questions I proposed at the start of last
-semester.  I think the questions will be something along the lines of:
+Compare with a real chip on area/frequency, and 
 
-\begin{itemize}
-\item I need at least 100 GFlop/s, minimize energy.
-\item I'm building 100k chips that cost \$10 each, maximize Dhrystone
-performance.
-\item How many convolutions/sec can I fit into 100mW?
-\end{itemize}
+\subsection{Comparison with Exsting Flows}
 
-The point is that these are the sort of questions you should be asking when
-building a chip, just scaled down a bit so a single person project can produce
-an interesting set of designs that will compete on them.
+LEON3 publishes SAED32 scripts, so I'm going to go look at these.
+
+\section{Studies}
+
+\subsection{Sweeping Cell Density}
+
+\subsection{Does Technology Matter?}
 
 \end{document}
