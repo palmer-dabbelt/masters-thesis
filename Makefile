@@ -24,7 +24,7 @@ paper/masters-thesis.pdf: \
 paper/Makefile: \
 		$(TEK_BIN) \
 		$(wildcard paper/*.tex)
-	cd $(dir $@) && $(abspath $<)
+	cd $(dir $@) && $(abspath $<) masters-thesis.tex
 
 obj/install/tek/bin/tek: obj/build/tek/Makefile
 	$(MAKE) -C $(dir $<) install
