@@ -331,8 +331,8 @@ allow floorplanning to be portable to multiple designs, tools, and processes
 users write floorplan fragments in a Python DSL that was created for this
 project.
 
-PLSI's floorplanning system is based on generating heirarchical groups of
-placeable elements, specifying hints as to how they should be arragned, and
+PLSI's floorplanning system is based on generating hierarchical groups of
+placeable elements, specifying hints as to how they should be arranged, and
 nesting these groups.  The floorplanning DSL is designed to make it easy for
 users to produce legal first-cut floorplans and then optimize them when trying
 to actually build a chip.  This DSL handles the following pain points for users:
@@ -347,10 +347,96 @@ to actually build a chip.  This DSL handles the following pain points for users:
 
 The vast majority of the floorplanning work has gone into handling SRAM macros
 for ASICs, since those are by far the most important QoR constraints when
-building high performance processors.
+building high performance processors.  The floorplanning step is
+semi-automated: it's designed to make it easy for users to write first-cut
+floorplans that apply to multiple design configurations while still allowing
+them to fine-tine floorplans for maximum performance on the designs that end up
+being interesting.
+
+\begin{figure}
+  \begin{verbatim}
+class RocketTilePlacer:
+  def __init__(self, config):
+    self.top = None
+    self.l1dd = []
+    self.l1dm = []
+    self.l1id = []
+    self.l1im = []
+
+  def insert(self, macro):
+    if macro.matches(config.rtl_top):
+      self.top = TopMacro(macro.name, macro.width, macro.height)
+    elif macro.matches("coreplex/rocketTiles/dcache/data"):
+      self.l1dd.append(macro)
+    elif macro.matches("coreplex/rocketTiles/dcache/MetadataArray"):
+      self.l1dm.append(macro)
+    elif macro.matches("coreplex/rocketTiles/frontend/icache/u"):
+      self.l1id.append(macro)
+    elif macro.matches("coreplex/rocketTiles/frontend/icache/tag_array/tag_array"):
+      self.l1im.append(macro)
+    else:
+      print("%s cannot be matched" % macro.name)
+      return False
+    return True
+
+  def list_constraints(self):
+    l1dd = TopLeftPlacer   (self.top, self.top.tl(), sorted(self.l1dd))
+    l1dm = TopLeftPlacer   (self.top, l1dd.bl(),     sorted(self.l1dm), self.top.width * 0.75)
+    l1id = BottomLeftPlacer(self.top, self.top.bl(), sorted(self.l1id))
+    l1im = BottomLeftPlacer(self.top, l1id.tl(),     sorted(self.l1im), self.top.width * 0.75)
+    return l1dd.place() + l1dm.place() + l1id.place() + l1im.place()
+\end{verbatim}
+
+  \caption{Example Rocket Floorplan}
+  \label{impl:example-floorplan}
+\end{figure}
+
+Figure~\ref{impl:example-floorplan} shows the floorplanning script for a single
+Rocket core without an L2.  As you can see, users can write any Python code
+they want to control floorplans in as much detail as they want -- even
+providing absolute coordinates for every floorplanable block if they so desire.
+The canonical way to write floorplans in PLSI is to use the demonstrated
+helpers to write floorplans in a more technology-agnostic way.
+
+For example, the floorplan demonstrated in Figure~\ref{impl:example-floorplan}
+should work on any of the technologies I have had access to, and should work
+for any reasonable configuration of Rocket.  This floorplan puts the data RAMs
+for the instruction and data caches on opposite sides of the chip and puts the
+metadata RAMs in between, limiting the width of the metadata blocks to $75\%$
+of the total chip width in order to avoid entirely blocking off the data RAMs
+on pathological technologies (like SAED32) where Rocket's L1 metadata maps very
+poorly to the available SRAMs.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{figures/rocket-floorplan-general.svg}
+  \end{center}
+  \caption{Generalized version of the example floorplan from Figure~\ref{impl:example-floorplan}}
+  \label{impl:example-floorplan-output}
+\end{figure}
+
+\begin{figure}
+  \caption{Concrete version of the example floorplan from Figure~\ref{impl:example-floorplan}, on SAED32}
+  \label{impl:example-floorplan-saed32}
+\end{figure}
 
 \subsection{Power Floorplanning}
 
+Almost no work has gone into power floorplanning in PLSI: you just get a single
+power domain with rings around the outside of the chip's routeable area and a
+grid inside the rings on the highest metal layers available for regular
+routing.  This power floorplan should be sufficient to evaluate
+microarchitectures and to build simple chips, but isn't enough to build
+a big chip.
+
 \section{Place and Route Tool Driver}
+
+Much like the synthesis tool driver, the place and route tool driver takes in
+various vendor-agnostic file formats, converts them to vendor-specific formats
+when necessary, runs the vendor's synthesis tool, checks to see that there are
+no errors, and then produces the results for other steps to use.
+
+The only PAR tool driver I bothered implementing was for ICC, since it is the
+only one that works with the 32nm Synopsys educational PDK.
 
 \end{document}
