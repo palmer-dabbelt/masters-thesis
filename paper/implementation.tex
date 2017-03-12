@@ -324,6 +324,33 @@ order to produce a list of modules
 
 \section{Floorplanning}
 
+One of the more painful steps of producing ASIC results is floorplanning.  Our
+floorplanning scripts have traditionally been non-portable even for similar
+designs on the same process, much less across different processes.  In order to
+allow floorplanning to be portable to multiple designs, tools, and processes
+users write floorplan fragments in a Python DSL that was created for this
+project.
+
+PLSI's floorplanning system is based on generating heirarchical groups of
+placeable elements, specifying hints as to how they should be arragned, and
+nesting these groups.  The floorplanning DSL is designed to make it easy for
+users to produce legal first-cut floorplans and then optimize them when trying
+to actually build a chip.  This DSL handles the following pain points for users:
+
+\begin{itemize}
+\item Matching Chisel-generated names to logical floorplan groups.
+\item Shaping logical floorplan groups.
+\item Ordering macros within logical floorplan groups.
+\end{itemize}
+
+\subsection{SRAM Floorplanning}
+
+The vast majority of the floorplanning work has gone into handling SRAM macros
+for ASICs, since those are by far the most important QoR constraints when
+building high performance processors.
+
+\subsection{Power Floorplanning}
+
 \section{Place and Route Tool Driver}
 
 \end{document}
