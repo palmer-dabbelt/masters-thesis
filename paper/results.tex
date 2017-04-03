@@ -1,33 +1,273 @@
 \documentclass{article}
+\usepackage{multicol}
 
 \begin{document}
 \chapter{Results}
 
-\section{Portability}
+PLSI has been implemented and works for multiple Rocket Chip based designs.
+This section presents the results for Rocket, BOOM, and Hwacha on Synopsys'
+32nm Educational PDK produced via the Synopsys tools.  In addition to
+presenting the results, there is a discussion of the validity of the results.
 
-The point of PLSI is to be portable in two dimmensions: 
+These results were all run using the latest version of Rocket Chip that
+supported the various configurations when this thesis was being written.  The
+excat versions of Rocket Chip differ between the various targets because all
+the forks aren't up to date at all times, but they're all tagged as git
+submodules in the thesis repository.  Newer versions of Rocket Chip have
+removed support for the L2 cache, which is why the Hwacha configuration (which
+is based on an older version of Rocket Chip) is the only configuration that has
+an L2 cache attached.
 
-\subsection{Portability to Multiple Technologies}
+\subsection{Rocket}
+
+\begin{figure}
+  \begin{verbatim}
+{
+  "clocks": [
+    {
+      "name": "clock",
+      "period": "1250ps",
+      "par derating": "250ps"
+    }
+  ],
+  "scenarios": [
+    {
+      "corner": {
+        "nmos": "typical",
+        "pmos": "typical",
+        "temperature": "25 C"
+      },
+      "supplies": {
+        "VDD": "1.05 V",
+        "GND": "0 V"
+      }
+    }
+  ]
+}
+\end{verbatim}
+  \caption{PLSI CAD Configuration for DefaultConfig}
+  \label{res:rocket-config}
+\end{figure}
+
+\begin{figure}
+\begin{verbatim}
+\end{verbatim}
+  \caption{PLSI Floorplan for DefaultConfig}
+  \label{res:rocket-fppy}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{figures/icc-rocket.png}
+  \end{center}
+  \caption{ICC Floorplan for DefaultConfig}
+  \label{res:rocket-icc}
+\end{figure}
+
+\begin{figure}
+\begin{multicols}{2}
+\begin{verbatim}
+  Timing Path Group 'clock'
+  -----------------------------------
+  Levels of Logic:              34.00
+  Critical Path Length:          1.52
+  Critical Path Slack:          -0.16
+  Critical Path Clk Period:      1.35
+  Total Negative Slack:        -18.73
+  No. of Violating Paths:      988.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+\end{verbatim}
+
+\begin{verbatim}
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:        609
+  Hierarchical Port Count:      18116
+  Leaf Cell Count:             115987
+  Buf/Inv Cell Count:           16638
+  Buf Cell Count:                7235
+  Inv Cell Count:                9403
+  CT Buf/Inv Cell Count:          689
+  Combinational Cell Count:     94266
+  Sequential Cell Count:        21721
+  Macro Count:                     60
+  -----------------------------------
+\end{verbatim}
+
+\begin{verbatim}
+  Area
+  -----------------------------------
+  Combinational Area:   258124.149879
+  Noncombinational Area:
+                        144030.016922
+  Buf/Inv Area:          48915.350153
+  Total Buffer Area:         31126.03
+  Total Inverter Area:       17789.32
+  Macro/Black Box Area:
+                       1009378.968750
+  Net Area:             381408.759989
+  Net XLength        :     2435133.75
+  Net YLength        :     2365051.00
+  -----------------------------------
+  Cell Area:           1411533.135552
+  Design Area:         1792941.895541
+  Net Length        :      4800185.00
 
 
-\subsection{Portability to Multiple Cores}
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:        125786
+  Nets With Violations:           316
+  Max Trans Violations:            14
+  Max Cap Violations:             308
+\end{verbatim}
+\end{multicols}
+  \caption{ICC QoR Report for DefaultConfig}
+  \label{res:rocket-qor}
+\end{figure}
 
-\subsection{An Example Parametric Study}
+\subsection{BOOM}
 
-\section{Quality of Results}
+\subsection{Hwacha (with L2)}
 
-\subsection{Comparison with Existing Chips}
+\begin{figure}
+  \begin{verbatim}
+{
+  "clocks": [
+    {
+      "name": "clock",
+      "period": "2500ps",
+      "par derating": "2500ps"
+    }
+  ],
+  "scenerios": [
+    {
+      "corner": {
+        "nmos": "typical",
+        "pmos": "typical",
+        "temperature": "25 C"
+      },
+      "supplies": {
+        "VDD": "1.05 V",
+        "GND": "0 V"
+      }
+    }
+  ]
+}
+\end{verbatim}
+  \caption{PLSI CAD Configuration for EOS24Config}
+  \label{res:hwacha-config}
+\end{figure}
 
-Compare with a real chip on area/frequency, and 
+\begin{figure}
+\begin{verbatim}
+\end{verbatim}
+  \caption{PLSI Floorplan for EOS24Config}
+  \label{res:rocket-fppy}
+\end{figure}
 
-\subsection{Comparison with Exsting Flows}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{figures/icc-hwacha.png}
+  \end{center}
+  \caption{ICC Floorplan for EOS24Config}
+  \label{res:hwacha-icc}
+\end{figure}
 
-LEON3 publishes SAED32 scripts, so I'm going to go look at these.
+\begin{figure}
+\begin{multicols}{2}
+\begin{verbatim}
+  Timing Path Group 'clock'
+  -----------------------------------
+  Levels of Logic:              29.00
+  Critical Path Length:          5.63
+  Critical Path Slack:          -0.73
+  Critical Path Clk Period:      5.00
+  Total Negative Slack:         -2.61
+  No. of Violating Paths:       27.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+\end{verbatim}
+\begin{verbatim}
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:       3517
+  Hierarchical Port Count:     145207
+  Leaf Cell Count:             786039
+  Buf/Inv Cell Count:          144033
+  Buf Cell Count:               65811
+  Inv Cell Count:               78222
+  CT Buf/Inv Cell Count:         3501
+  Combinational Cell Count:    686589
+  Sequential Cell Count:        99450
+  Macro Count:                    608
+  -----------------------------------
+\end{verbatim}
+\begin{verbatim}
+  Area
+  -----------------------------------
+  Combinational Area:  1875823.402210
+  Noncombinational Area:
+                        659483.367816
+  Buf/Inv Area:         463893.370644
+  Total Buffer Area:        283467.90
+  Total Inverter Area:      180425.47
+  Macro/Black Box Area:
+                      10255909.371094
+  Net Area:            3823554.904260
+  Net XLength        :    28303776.00
+  Net YLength        :    25156786.00
+  -----------------------------------
+  Cell Area:          12791216.141120
+  Design Area:        16614771.045380
+  Net Length        :     53460560.00
 
-\section{Studies}
 
-\subsection{Sweeping Cell Density}
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:        850635
+  Nets With Violations:         13080
+  Max Trans Violations:          1133
+  Max Cap Violations:           12164
+\end{verbatim}
+\end{multicols}
+  \caption{ICC QoR Report for EOS24Config}
+  \label{res:hwacha-qor}
+\end{figure}
 
-\subsection{Does Technology Matter?}
+\section{Discussion}
+
+The results in this section and meant to be suitable for doing computer
+architecture research, not for building an actual chip.  As such they skip the
+signoff sections of the flow that, from my experience when building chips,
+don't have meaningful effects on QoR but take a lot of time to get right.
+
+The simplest configuration run for this thesis was the default Rocket
+configuration, DefaultConfig.  This contains Rocket, 64-bit a 5 stage in-order
+core, with 32 KiB split L1 caches and a floating-point unit.  This
+configuration and floorplan gets very good performance (1.5GHz) on commercial
+28nm technologies, but it appears that the 32nm Synopsys EDK is significantly
+slower.
+
+The PLSI configuration used to generate DefaultConfig is shown in
+Figure~\ref{res:rocket-config} and is pretty boring: there's a little bit of
+derating for PAR, but that's just about as good as I'm able to do for anything.
+The post-PAR results show that it's close to meeting timing, and that there
+aren't too many DRC errors so the results are probably believable.
+
+The Hwacha results are, however, a whole different story.  As you can see from
+the PLSI configuration file, the physical design here gets very bad QoR --
+there's a 50\% clock rate difference between the post-PAR and post-synthesis
+results.  While some of this can be attributed to Rocket Chip's memories not
+mapping well to the 32nm EDK's SRAMs (which have to write masks), a significant
+part of this is probably due to the poor floorplan quality.  From looking at
+Figure~\ref{res:hwacha-icc}, you can see how the floorplan generated from
+Figure~\ref{res:hwacha-fppy} is quite bad: you can see how the L2 is too wide
+and too short, which results in there being no space for the actual core logic.
 
 \end{document}

@@ -3,13 +3,40 @@
 \begin{document}
 \chapter{Conclusion}
 
+The goal of producing PLSI was to make it easy to generate VLSI results for
+computer architecture research, and I think it's at least gotten part of the
+way there.  Right now the biggest obstacle in using PLSI is that the
+semi-automated floorplanning flow hasn't been pushed on enough to be solid.
+Unfortunately I lost my access to real technologies right at the end of
+producing this thesis so I couldn't get proper results, and Rocket Chip doesn't
+map well to the 32nm Synopsys Educational PDK so what's in there won't apply
+well to the other technologies I've seen.
+
 \section{Future Work}
 
-\subsection{Retiming}
+While I'm not actually really quite sure what to conclude from PLSI's
+implementation and results, I can conclusively tell you that there's a lot more
+work to do in this space.
 
-\subsection{Estimating Clock Speeds}
+\subsection{Benchmarking and Power}
 
-Hopefully the conclusion is ``it's really not that hard to run VLSI results for
-an ISCA paper, just use my stuff''.
+If you've been paying attention then you'll probably notice that there aren't
+any results from actually simulating the designs that were pushed through the
+tools.  This was mostly for time reasons (as far as I know PrimeTime Power
+works and has been used by other people, but Donggyu fixed it after I'd ran out
+of time to run results), but also because it appears that the 32nm Synopsys
+EDK's power models wouldn't be good enough to get any reasonable information
+from.  There's two problems here: the lack of write masks means many more SRAM
+macros are emitted than is reasonable, and I get a lot of warnings from the
+tools about SRAMs not having power modells.
+
+\subsection{DRC and LVS Fixing}
+
+I was hoping to have my designs LVS clean and set a low threshold for DRC
+errors, but it looks like the 32nm Synopsys EDK has some problems that prevent
+you from producing DRC clean results using it -- I specifically ran into a lot
+of nets with redundant via errors that looked like some sort of tech file vs
+DRC deck mismatch.  While I tried a few ways to fix this, I didn't have enough
+time to get it fixed properly so just gave up.
 
 \end{document}
