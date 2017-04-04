@@ -131,6 +131,107 @@ an L2 cache attached.
 
 \subsection{BOOM}
 
+\begin{figure}
+  \begin{verbatim}
+{
+  "clocks": [
+    {
+      "name": "clock",
+      "period": "1600ps",
+      "par derating": "400ps"
+    }
+  ],
+  "scenerios": [
+    {
+      "corner": {
+        "nmos": "typical",
+        "pmos": "typical",
+        "temperature": "25 C"
+      },
+      "supplies": {
+        "VDD": "1.05 V",
+        "GND": "0 V"
+      }
+    }
+  ]
+}
+\end{verbatim}
+  \caption{PLSI CAD Configuration for SmallBOOMConfig}
+  \label{res:boom-config}
+\end{figure}
+
+\begin{figure}
+\begin{verbatim}
+\end{verbatim}
+  \caption{PLSI Floorplan for SmallBOOMConfig}
+  \label{res:boom-fppy}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.95\linewidth]{figures/icc-boom.png}
+  \end{center}
+  \caption{ICC Floorplan for SmallBOOMConfig}
+  \label{res:boom-icc}
+\end{figure}
+
+\begin{figure}
+\begin{multicols}{2}
+\begin{verbatim}
+  Timing Path Group 'clock'
+  -----------------------------------
+  Levels of Logic:              53.00
+  Critical Path Length:          3.56
+  Critical Path Slack:          -1.56
+  Critical Path Clk Period:      2.00
+  Total Negative Slack:      -1282.67
+  No. of Violating Paths:    10636.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+\end{verbatim}
+
+\begin{verbatim}
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:       1165
+  Hierarchical Port Count:      76737
+  Leaf Cell Count:             226528
+  Buf/Inv Cell Count:           39474
+  Buf Cell Count:               20757
+  Inv Cell Count:               18717
+  CT Buf/Inv Cell Count:         2089
+  Combinational Cell Count:    187351
+  Sequential Cell Count:        39177
+  Macro Count:                    186
+  -----------------------------------
+\end{verbatim}
+
+\begin{verbatim}
+  Area
+  -----------------------------------
+  Combinational Area:   548249.859481
+  Noncombinational Area:
+                        260366.723512
+  Buf/Inv Area:         141541.690599
+  Total Buffer Area:         94002.53
+  Total Inverter Area:       47539.16
+  Macro/Black Box Area:
+                       3912562.714844
+  Net Area:            1230432.321193
+  Net XLength        :     7458008.00
+  Net YLength        :     7564863.50
+  -----------------------------------
+  Cell Area:           4721179.297837
+  Design Area:         5951611.619030
+  Net Length        :     15022872.00
+\end{verbatim}
+\end{multicols}
+  \caption{ICC QoR Report for SmallBOOMConfig}
+  \label{res:boom-qor}
+\end{figure}
+
 \subsection{Hwacha (with L2)}
 
 \begin{figure}
