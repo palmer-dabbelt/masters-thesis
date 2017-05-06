@@ -50,7 +50,50 @@ an L2 cache attached.
 \end{figure}
 
 \begin{figure}
+\tiny
 \begin{verbatim}
+class RocketTilePlacer:
+  def __init__(self, config):
+    self.top = None
+    self.l1dd = []
+    self.l1dm = []
+    self.l1id = []
+    self.l1im = []
+
+  def insert(self, macro):
+    if macro.matches(config.rtl_top):
+      self.top = TopMacro(macro.name, macro.width, macro.height)
+    # Version Break
+    elif macro.matches("coreplex/RocketTile/DCache/data"):
+      self.l1dd.append(macro)
+    elif macro.matches("coreplex/RocketTile/DCache/MetadataArray"):
+      self.l1dm.append(macro)
+    elif macro.matches("coreplex/RocketTile/icache/icache"):
+      self.l1id.append(macro)
+    elif macro.matches("coreplex/RocketTile/icache/icache/tag_array/tag_array"):
+      self.l1im.append(macro)
+    # Version Break
+    elif macro.matches("coreplex/rocketTiles/dcache/data"):
+      self.l1dd.append(macro)
+    elif macro.matches("coreplex/rocketTiles/dcache/MetadataArray"):
+      self.l1dm.append(macro)
+    elif macro.matches("coreplex/rocketTiles/frontend/icache"):
+      self.l1id.append(macro)
+    elif macro.matches("coreplex/rocketTiles/frontend/icache/u"):
+      self.l1id.append(macro)
+    elif macro.matches("coreplex/rocketTiles/frontend/icache/tag_array/tag_array"):
+      self.l1im.append(macro)
+    else:
+      print("%s cannot be matched" % macro.name)
+      return False
+    return True
+
+  def list_constraints(self):
+    l1dd = TopLeftPlacer   (self.top, self.top.tlf(), sorted(self.l1dd), True)
+    l1dm = TopLeftPlacer   (self.top, l1dd.bl(),      sorted(self.l1dm), False)
+    l1id = BottomLeftPlacer(self.top, self.top.blf(), sorted(self.l1id), True)
+    l1im = BottomLeftPlacer(self.top, l1id.tl(),      sorted(self.l1im), False)
+    return l1dd.place() + l1dm.place() + l1id.place() + l1im.place()
 \end{verbatim}
   \caption{PLSI Floorplan for DefaultConfig}
   \label{res:rocket-fppy}
@@ -161,7 +204,59 @@ an L2 cache attached.
 \end{figure}
 
 \begin{figure}
+\tiny
 \begin{verbatim}
+class BoomTilePlacer(RocketTilePlacer):
+  def __init__(self, config):
+    self.top = None
+    self.l1dd = []
+    self.l1dm = []
+    self.l1id = []
+    self.l1im = []
+    self.l1ht = []
+    self.l1pt = []
+    self.l1ei = []
+
+  def insert(self, macro):
+    if macro.matches(config.rtl_top):
+      self.top = TopMacro(macro.name, macro.width, macro.height)
+    # Version Break
+    elif macro.matches("coreplex/BOOMTile/DCache/data"):
+      self.l1dd.append(macro)
+    elif macro.matches("coreplex/BOOMTile/DCache/MetadataArray"):
+      self.l1dm.append(macro)
+    elif macro.matches("coreplex/BOOMTile/HellaCache/MetadataArray"):
+      self.l1dm.append(macro)
+    elif macro.matches("coreplex/BOOMTile/HellaCache/meta"):
+      self.l1dm.append(macro)
+    elif macro.matches("coreplex/BOOMTile/icache/icache"):
+      self.l1id.append(macro)
+    elif macro.matches("coreplex/BOOMTile/icache/icache/u"):
+      self.l1id.append(macro)
+    elif macro.matches("coreplex/BOOMTile/HellaCache/data"):
+      self.l1dd.append(macro)
+    elif macro.matches("coreplex/BOOMTile/icache/icache/tag_array/tag_array"):
+      self.l1im.append(macro)
+    elif macro.matches("coreplex/BOOMTile/core/bpd_stage/br_predictor/counters/p_table/p_table/p_table"):
+      self.l1pt.append(macro)
+    elif macro.matches("coreplex/BOOMTile/core/bpd_stage/br_predictor/counters/h_table/h_table/h_table"):
+      self.l1ht.append(macro)
+    elif macro.matches("coreplex/BOOMTile/core/bpd_stage/br_predictor/brob/entries_info/entries_info"):
+      self.l1ei.append(macro)
+    else:
+      print("%s cannot be matched" % macro.name)
+      return False
+    return True
+
+  def list_constraints(self):
+    l1dd = TopLeftPlacer   (self.top, self.top.tlf(), sorted(self.l1dd), True)
+    l1dm = TopLeftPlacer   (self.top, l1dd.bl(),      sorted(self.l1dm), False)
+    l1ht = BottomLeftPlacer(self.top, self.top.blf(), sorted(self.l1ht), True)
+    l1pt = BottomLeftPlacer(self.top, l1ht.tl(),      sorted(self.l1pt), False)
+    l1id = BottomLeftPlacer(self.top, l1pt.tl(),      sorted(self.l1id), False)
+    l1im = BottomLeftPlacer(self.top, l1id.tl(),      sorted(self.l1im), False)
+    l1ei = BottomLeftPlacer(self.top, l1im.tl(),      sorted(self.l1ei), False)
+    return l1dd.place() + l1dm.place()  + l1ht.place() + l1pt.place() + l1id.place() + l1im.place() + l1ei.place()
 \end{verbatim}
   \caption{PLSI Floorplan for SmallBOOMConfig}
   \label{res:boom-fppy}
@@ -264,7 +359,64 @@ an L2 cache attached.
 \end{figure}
 
 \begin{figure}
+\tiny
 \begin{verbatim}
+class HwachaTilePlacer(RocketTilePlacer):
+  def __init__(self, config):
+    self.top = None
+    self.l1dd = []
+    self.l1dm = []
+    self.l1id = []
+    self.l1im = []
+    self.hid = []
+    self.him = []
+    self.hrf = []
+    self.l2d = []
+    self.l2m = []
+
+  def insert(self, macro):
+    if macro.matches(config.rtl_top):
+      self.top = TopMacro(macro.name, macro.width, macro.height)
+    elif macro.matches("DefaultCoreplex/tiles/HellaCache/data"):
+      self.l1dd.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/HellaCache/meta"):
+      self.l1dm.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/icache/icache"):
+      self.l1id.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/icache/icache/u"):
+      self.l1id.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/icache/icache/tag_array/tag_array"):
+      self.l1im.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/Hwacha/icache/icache"):
+      self.hid.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/Hwacha/icache/icache/u"):
+      self.hid.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/Hwacha/icache/icache/tag_array/tag_array"):
+      self.him.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/Hwacha/vus/vxuInst/laneInst/bankInst/rfInst/HwSRAMRF/HwSRAMR"):
+      self.hrf.append(macro)
+    elif macro.matches("DefaultCoreplex/tiles/Hwacha/vus/vxuInst/laneInst/bankInst/rfInst/HwSRAMRF/HwSRAMRF"):
+      self.hrf.append(macro)
+    elif macro.matches("DefaultCoreplex/L2HellaCacheBank/data_array/array"):
+      self.l2d.append(macro)
+    elif macro.matches("DefaultCoreplex/L2HellaCacheBank/meta/meta"):
+      self.l2m.append(macro)
+    else:
+      print("%s cannot be matched" % macro.name)
+      return False
+    return True
+
+  def list_constraints(self):
+    l1dd = TopLeftPlacer   (self.top, self.top.tlf(), sorted(self.l1dd), True,  0.2)
+    l1dm = TopLeftPlacer   (self.top, l1dd.bl(),      sorted(self.l1dm), False, 0.2)
+    l1id = TopLeftPlacer   (self.top, l1dm.bl(),      sorted(self.l1id), False, 0.2)
+    l1im = TopLeftPlacer   (self.top, l1id.bl(),      sorted(self.l1im), False, 0.2)
+    hrf  = BottomLeftPlacer(self.top, self.top.blf(), sorted(self.hrf),  True,  0.2)
+    hid  = BottomLeftPlacer(self.top, hrf.tl(),       sorted(self.hid),  False, 0.2)
+    him  = BottomLeftPlacer(self.top, hid.tl(),       sorted(self.him),  False, 0.2)
+    l2d  = TopRightPlacer  (self.top, self.top.trf(), sorted(self.l2d),  True,  0.8)
+    l2m  = TopRightPlacer  (self.top, l2d.br(),       sorted(self.l2m),  False, 0.8)
+    return l1dd.place() + l1dm.place() + l1id.place() + l1im.place() + hrf.place() + hid.place() + him.place() + l2d.place() + l2m.place()
 \end{verbatim}
   \caption{PLSI Floorplan for EOS24Config}
   \label{res:rocket-fppy}
