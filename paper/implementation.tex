@@ -9,25 +9,35 @@ mixed and matched in order to produce a chip.  Users are expected to define the
 following variables, which will be used to control the flow:
 
 \begin{itemize}
-\item \texttt{CORE\_GENERATOR}
-\item \texttt{SOC\_GENERATOR}
-\item \texttt{TECHNOLOGY}
-\item \texttt{SYNTHESIS\_TOOL}
-\item \texttt{PAR\_TOOL}
-\item \texttt{FORMAL\_TOOL}
-\item \texttt{SIGNOFF\_POWER\_TOOL}
-\item \texttt{SIMULATOR}
+\item \texttt{CORE\_GENERATOR}: Selects the core genertor, which generates the
+RTL for the chip.
+\item \texttt{SOC\_GENERATOR}: Selects the SOC injector, which adds
+chip-specific RTL to the core.  This includes things like top-level IOs.
+\item \texttt{TECHNOLOGY}: The technology to map to.
+\item \texttt{SYNTHESIS\_TOOL}: The synthesis tool to run.
+\item \texttt{PAR\_TOOL}: The place and route tool to run.
+\item \texttt{FORMAL\_TOOL}: The formal verification tool to run.
+\item \texttt{SIGNOFF\_POWER\_TOOL}: The tool to be used for signoff power analysis.
+\item \texttt{SIMULATOR}: The simulator to use when verifying the design.
 \end{itemize}
 
 It is also possible to pass configuration information to each step in the flow
 by setting the following variables
 
 \begin{itemize}
-\item \texttt{CORE\_CONFIG}
-\item \texttt{CORE\_SIM\_CONFIG}
-\item \texttt{SOC\_CONFIG}
-\item \texttt{MAP\_CONFIG}
+\item \texttt{CORE\_CONFIG}: This configuration is passed to the core generator
+and specifies things like cache sizes.
+\item \texttt{CORE\_SIM\_CONFIG}: This configures the simulations that will be
+run.  This only exists at the core level as the rest of the steps in the flow
+are expected to read the core's test list and figure out duplicate tests when
+necessary.
+\item \texttt{SOC\_CONFIG}: Configures the SOC generator, allowing users to set
+things like the interface width.
+\item \texttt{MAP\_CONFIG}: Specifies how the SOC will be mapped to a
+technology, including things like the corner and target frequency.
 \end{itemize}
+
+\section{Overview}
 
 A top-level Makefile sequences the entire chip build; which includes running
 all the CAD tools, testing the designs after every tool is run, and
@@ -41,6 +51,57 @@ in Figure~\ref{impl:plsi-flow}.
 \caption{A high-level overview of PLSI}
 \label{impl:plsi-flow}
 \end{figure}
+
+While the primary user interface of PLSI is the top-level Makefile, that's not
+actually a particularly interesting implementation challange: everyone knows
+you can describe arbitrary dependency graphs in make and then execute them.
+The interesting part of PLSI are the tools that implement the various rules and
+the interchange formats that are passed between the various tools.  The
+fundamental driving design decision behind PLSI is that computers are better
+than performing repetitive, arithmatic-laden tasks that humans are.  When
+implementing PLSI I took my experience from working with a handful of tapeout
+teams.
+
+This design philosophy is probably best explained with an example.  Early in
+the design of the RISC-V ISA we flip-flopped a few times between the 64-bit ISA
+having 4KiB pages vs it having 8KiB pages.  This resulted in our designs with a
+16KiB L1 data cache moving between 2 sets of 8 KiB and 4 sets of 4 KiB.
+Propagating this change from the ISA spec to GDS required the intervention of a
+half dozen students and involved months of latency.
+
+\begin{itemize}
+\item The ISA designer changes the spec.  This spec change is already
+automatically propagated to the RTL, so this step is easy.
+\item The RTL lead on the chip needed to trigger a merge, since this ISA change
+was incompatible with existing binaries.  This incompatibility wasn't usually
+found until software failed to run, which required extensive debugging.
+\item A new memory macro wrapper needed to be added to the list of known memory
+macros.  This list was duplicated multiple times, so this required talking to a
+handful of people.
+\item The verification guy's scripts needed to be modified to run simulations,
+as the names of the memory macros had changed.
+\item The floorplan needed to be updated to reflect the new macro names.
+\item Someone needs to produce new post-PAR power numbers, which we never
+actually did.
+\end{itemize}
+
+All this manual labor and communication was required in order to perform
+effectively no useful work: we were using 4 KiB SRAMs so we ended up having the
+same macros put in the same places.  Contrast the old flow with the PLSI flow
+for performing the same change:
+
+\begin{itemize}
+\item The ISA designer changes the spec.
+\item The ISA designer runs "make" to produce post-PAR performance numbers.
+\end{itemize}
+
+This is really the key to PLSI: since everyone can run the flow, making a small
+change doesn't require involving everyone in the project.  This allows everyone
+working on the project to get actual work done as opposed to spending their
+time propagating other people's trivial changes.  This isn't a new idea: this
+sort of continuous integration flow is common to many software development
+methodologies, it's just that for some reason it doesn't seem to have
+propagated to how people are building chips.
 
 \section{Core Generators}
 
