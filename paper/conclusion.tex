@@ -7,10 +7,6 @@ The goal of producing PLSI was to make it easy to generate VLSI results for
 computer architecture research, and I think it's at least gotten part of the
 way there.  Right now the biggest obstacle in using PLSI is that the
 semi-automated floorplanning flow hasn't been pushed on enough to be solid.
-Unfortunately I lost my access to real technologies right at the end of
-producing this thesis so I couldn't get proper results, and Rocket Chip doesn't
-map well to the 32nm Synopsys Educational PDK so what's in there won't apply
-well to the other technologies I've seen.
 
 \section{Future Work}
 
@@ -24,7 +20,7 @@ of time to run results), but also because it appears that the 32nm Synopsys
 EDK's power models wouldn't be good enough to get any reasonable information
 from.  There's two problems here: the lack of write masks means many more SRAM
 macros are emitted than is reasonable, and I get a lot of warnings from the
-tools about SRAMs not having power modells.
+tools about SRAMs not having power models.
 
 \subsection{DRC and LVS Fixing}
 

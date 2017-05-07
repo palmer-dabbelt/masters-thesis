@@ -149,13 +149,11 @@ transparently shims all top-level decoupled interfaces over a low-speed,
 single-ended interface that is feasible to implement using the standard digital
 IO pads that a popular commercial foundry provides.  This is designed to
 provide a simple mechanism for building research-style test chips: it
-alleviates the need to maintain chip-specific IO harnesses.  This SOC generator
-was used to build a real chip on an agressive technology, but I've been removed
-from the NDAs so I can't bring up the chip to see if it works or not.  The
-process is completely automated: a PLSI tool reads to top-level Verilog of the
-target design (using a Verilog parser I wrote), infers the decoupled
-interfaces, generates an ASIC top-level wrapper and a test harness for both
-FPGAs and simulation.
+alleviates the need to maintain chip-specific IO harnesses.  The process is
+completely automated: a PLSI tool reads to top-level Verilog of the target
+design (using a Verilog parser I wrote), infers the decoupled interfaces,
+generates an ASIC top-level wrapper and a test harness for both FPGAs and
+simulation.
 
 \section{Technology Mapping}
 
