@@ -10,6 +10,23 @@ semi-automated floorplanning flow hasn't been pushed on enough to be solid.
 
 \section{Future Work}
 
+\subsection{A Useable Educational Technology}
+
+I was limited to using the Synopsys 32nm EDK to evaluate PLSI for this thesis.
+Unfortunately, optimizing designs for this technology results in design that
+don't match any real technology I've seen because the cost of some key
+structures doesn't match real technologies.
+
+In order to actually be able to do RTL-based computer architecture research
+without relying on the benevolence of other research groups, we need an
+educational technology that produces results that match those produced by real
+designs.  Since we're using this for computer architecture research instead of
+VLSI or CAD research, this doesn't actually need things like a realistic DRC
+deck.
+
+While I think this the most important future work for PLSI, I have no idea how
+to go about solving this.
+
 \subsection{Benchmarking and Power}
 
 If you've been paying attention then you'll probably notice that there aren't
@@ -30,5 +47,47 @@ you from producing DRC clean results using it -- I specifically ran into a lot
 of nets with redundant via errors that looked like some sort of tech file vs
 DRC deck mismatch.  While I tried a few ways to fix this, I didn't have enough
 time to get it fixed properly so just gave up.
+
+We've had these sorts of problems on real technologies as well, so I think this
+actually warrants writing a proper tool.  This tool would read DRC decks,
+technology files, and a set of DRC errors.  It would then modify the technology
+file in order to elide these DRC errors.
+
+\subsection{Clock Estimation}
+
+Even when using the PLSI flow, users still have to manually write clock
+constraints for every clock in their design.  This is an impediment when doing
+RTL-based computer architecture research as you can't know if each of your
+design points are producing reasonable QoR without performing some manual
+optimization on each of them.
+
+Based on my experience trying to get good QoR from our designs, it should be
+possible to apply some simple hueristics to our RTL inputs in order to
+determine the achievable clock peroid of a design to with 25\%, which is good
+enough that the CAD tools won't blow up when asked to meet that timing
+constraint.
+
+\subsection{Trace Based SRAM Selection}
+
+Given a well designed microprocessor, the most important constraint should be
+how it maps to SRAMs.  Even when using PLSI this process still requires manual
+intervention: while PLSI might make the selection of SRAMs automatic, the cost
+function still requires an engineer to intuit how memories should be mapped
+given their design constraints.  For PLSI this was easy: we just select the
+fastest SRAM every time -- now that we're past the end of Dennard Scaling this
+isn't the right thing to do.
+
+The right way to fix this is to use simulation traces to drive the cost
+function for SRAM selection, which will actually select the SRAM configuration
+the user desires.  This is really just the same as trace-based synthesis, but
+for SRAMs.
+
+\subsection{An Accuracury vs Effort Curve for Physical Design}
+
+While some might consider GDS the holy grail of accuracy when evaluating
+designs, getting accurate results actually requires significant effort.  It
+would be interesting to attempt to optimize extant designs to see how accurate
+their results actually are, and to compare these results with those produced by
+methodologies that requires less effort.
 
 \end{document}
