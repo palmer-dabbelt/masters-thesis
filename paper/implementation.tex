@@ -9,7 +9,7 @@ mixed and matched in order to produce a chip.  Users are expected to define the
 following variables, which will be used to control the flow:
 
 \begin{itemize}
-\item \texttt{CORE\_GENERATOR}: Selects the core genertor, which generates the
+\item \texttt{CORE\_GENERATOR}: Selects the core generator, which generates the
 RTL for the chip.
 \item \texttt{SOC\_GENERATOR}: Selects the SOC injector, which adds
 chip-specific RTL to the core.  This includes things like top-level IOs.
@@ -53,12 +53,12 @@ in Figure~\ref{impl:plsi-flow}.
 \end{figure}
 
 While the primary user interface of PLSI is the top-level Makefile, that's not
-actually a particularly interesting implementation challange: everyone knows
+actually a particularly interesting implementation challenge: everyone knows
 you can describe arbitrary dependency graphs in make and then execute them.
 The interesting part of PLSI are the tools that implement the various rules and
 the interchange formats that are passed between the various tools.  The
 fundamental driving design decision behind PLSI is that computers are better
-than performing repetitive, arithmatic-laden tasks that humans are.  When
+than performing repetitive, arithmetic-laden tasks that humans are.  When
 implementing PLSI I took my experience from working with a handful of tapeout
 teams.
 
@@ -127,7 +127,7 @@ include src/addons/core-generator/rocketchip/vars.mk
 \end{figure}
 
 Porting PLSI to a core generator that isn't based on Rocket Chip is a bit more
-involve.  The most interesting part of porting to PLSI is producing the list of
+involved.  The most interesting part of porting to PLSI is producing the list of
 macros that the core requires.  There is a custom FIRRTL backend in PLSI that
 allows Chisel based designs to easily generate PLSI macro configurations (this
 tool is automatically used for Rocket Chip based projects), but Verilog based
@@ -137,7 +137,7 @@ reasonable open-source Verilog core, so I haven't ported PLSI to one yet.
 \section{SOC Generators}
 
 The SOC generation step converts a processor into an actual chip.  This means
-inserting things like pads, clock recievers, etc.  For performing evaluations
+inserting things like pads, clock receivers, etc.  For performing evaluations
 of microarchitectures there is a ``nop'' SOC generator, which just doesn't do
 anything.  This provides a simple way of evaluating a design without getting
 into the complexities of chip building.  This was the only SOC generator used
@@ -167,7 +167,7 @@ but it handles all the things that commercial synthesis tools don't understand.
 
 The most important example of this is mapping sequential memories to SRAMs on
 ASIC targets.  This is something that traditional synthesis tools can't do
-because it's impossible to safely infer ASIC SRAMs from synthesizable Verilog.
+because it's impossible to safely infer ASIC SRAMs from synthesizeable Verilog.
 Chisel and FIRRTL handle this mismatch by having an explicit memory visible to
 the RTL programmer, which has been designed such that it can be mapped to ASIC
 SRAMs.  PLSI uses this information to generate ASIC SRAM wrappers which can
@@ -178,7 +178,7 @@ then be passed on to the remainder of the CAD flow.
 PCAD has standardized on JSON as the interchange format between every step in
 the flow because it's a well supported format.  The technology mapping step
 expects a list of all the macros that need to be implemented and a list of all
-the macros availiable to the technology.  Figure~\ref{impl:core-macro-list}
+the macros available to the technology.  Figure~\ref{impl:core-macro-list}
 shows an example of one of the branch predictor memories in one of the BOOM
 configurations, and Figure~\ref{impl:tech-macro-list} shows the ASIC SRAM that
 will be used to implement that memory on the 32nm EDK.  
@@ -313,7 +313,7 @@ order to map arbitrary Chisel memories to TSMC SRAMs.
 
 When porting PLSI to a new technology it should only be necessary to create a
 new technology JSON file (presumably patterned off a similar existing
-technology JSON file).  In practice some modifications to all the tools that
+technology JSON file).  In practice, some modifications to all the tools that
 consume the technology JSON files will be necessary, but the goal is that with
 each new technology these modifications will become simpler and simpler.
 
@@ -369,10 +369,10 @@ In order to be portable to multiple CAD tool vendors, PLSI expects that
 pre-existing synthesis tools are wrapped up with a script that converts the
 vendor-agnostic PLSI file formats into vendor-specific formats, runs the
 synthesis tool, and verifies that the run completed without errors.  As a study
-in portability, there are three synthesis tools supported: "yosys", an
-open-source synthesis tool; "dc", Synopsys's Design Compiler; and "genus",
-Cadence's GENUS synthesis tool.  Only basic features are supported for "yosys"
-and "genus", while "dc" is the tool that was regularly used.
+in portability, there are three synthesis tools supported: ``yosys'', an
+open-source synthesis tool; ``dc'', Synopsys's Design Compiler; and ``genus'',
+Cadence's GENUS synthesis tool.  Only basic features are supported for ``yosys''
+and ``genus'', while ``dc'' is the tool that was regularly used.
 
 These wrapper scripts are pretty straight-forward.  In order to avoid copyright
 violations, users are expected to have downloaded tarballs of the vendor's base
@@ -409,7 +409,7 @@ for ASICs, since those are by far the most important QoR constraints when
 building high performance processors.  The floorplanning step is
 semi-automated: it's designed to make it easy for users to write first-cut
 floorplans that apply to multiple design configurations while still allowing
-them to fine-tine floorplans for maximum performance on the designs that end up
+them to fine-tune floorplans for maximum performance on the designs that end up
 being interesting.
 
 \begin{figure}

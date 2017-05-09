@@ -6,14 +6,14 @@
 Computer architecture research has historically been handicapped by a lack of
 high quality baselines.  Thanks to the advent of RISC-V and Rocket Chip, there
 are now high quality baseline implementations of multiple families of
-microarchitectures availiable for free and with permissive licenses, along with
+microarchitectures available for free and with permissive licenses, along with
 silicon-proven results for some benchmarks.  Unfortunately there is no existing
 VLSI flow that allow architecture researchers to reproduce these results and to
 obtain numbers for their proposed ideas.
 
 PLSI is designed to be this flow: specifically PLSI is designed to allow
 computer architecture researchers to quickly get VLSI numbers, allowing them to
-do RTL based research.  To achive this, PLSI uses standard commercial VLSI
+do RTL based research.  To achieve this, PLSI uses standard commercial VLSI
 tools and flows whenever possible -- for this thesis only the Synopsys-based
 flow is demonstrated, but there are experimental flows for both Cadence and
 open-source tools.  In addition to being portable between multiple tools
@@ -26,10 +26,10 @@ The specific contributions of PLSI are:
 \begin{itemize}
 \item A macro synthesis tool used to map user's memories to various flavors of
 ASIC SRAMs.
-\item A modulor, technology-independent floorplanning framework.
+\item A modular, technology-independent floorplanning framework.
 \item Criteria for ensuring the commercial CAD tools produce reasonable results.
-\item Usability improvments from a good top-level Makefile that allows the
-entire flow to be automated and reproducable.
+\item Usability improvements from a good top-level Makefile that allows the
+entire flow to be automated and reproducible.
 \end{itemize}
 
 This thesis presents results for three Chisel-based cores (Rocket, BOOM, and
