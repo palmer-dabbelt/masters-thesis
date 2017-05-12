@@ -132,6 +132,7 @@
 \DeclareOption{phd}{\renewcommand\@masters{0}}
 \DeclareOption{masters}{\renewcommand\@masters{1}}
 \DeclareOption{oldmasters}{\renewcommand\@masters{2}}
+\DeclareOption{masters2}{\renewcommand\@masters{3}}
 \ExecuteOptions{phd}
 
 %  The Graduate Division requirements essentially require that theses be
