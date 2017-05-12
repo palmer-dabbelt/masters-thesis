@@ -418,10 +418,11 @@ class HwachaTilePlacer(RocketTilePlacer):
     him  = BottomLeftPlacer(self.top, hid.tl(),       sorted(self.him),  False, 0.2)
     l2d  = TopRightPlacer  (self.top, self.top.trf(), sorted(self.l2d),  True,  0.8)
     l2m  = TopRightPlacer  (self.top, l2d.br(),       sorted(self.l2m),  False, 0.8)
-    return l1dd.place() + l1dm.place() + l1id.place() + l1im.place() + hrf.place() + hid.place() + him.place() + l2d.place() + l2m.place()
+    return l1dd.place() + l1dm.place() + l1id.place() + l1im.place() + hrf.place()
+           + hid.place() + him.place() + l2d.place() + l2m.place()
 \end{verbatim}
   \caption{PLSI Floorplan for EOS24Config}
-  \label{res:rocket-fppy}
+  \label{res:hwacha-fppy}
 \end{figure}
 
 \begin{figure}

@@ -5,8 +5,8 @@
 
 The goal of producing PLSI was to make it easy to generate VLSI results for
 computer architecture research, and I think it's at least gotten part of the
-way there.  Right now the biggest obstacle in using PLSI is that the
-semi-automated floorplanning flow hasn't been pushed on enough to be solid.
+way there.  Right now the biggest obstacle in using PLSI is the
+semi-automated floorplanning flow.
 
 \section{Future Work}
 
@@ -24,20 +24,16 @@ designs.  Since we're using this for computer architecture research instead of
 VLSI or CAD research, this doesn't actually need things like a realistic DRC
 deck.
 
-While I think this is the most important future work for PLSI, I have no idea how
-to go about solving this.
+I think this is the most important future work for PLSI
 
 \subsection{Benchmarking and Power}
 
-If you've been paying attention then you'll probably notice that there aren't
-any results from actually simulating the designs that were pushed through the
-tools.  This was mostly for time reasons (as far as I know PrimeTime Power
-works and has been used by other people, but Donggyu fixed it after I'd ran out
-of time to run results), but also because it appears that the 32nm Synopsys
-EDK's power models wouldn't be good enough to get any reasonable information
-from.  There's two problems here: the lack of write masks means many more SRAM
-macros are emitted than is reasonable, and I get a lot of warnings from the
-tools about SRAMs not having power models.
+This report presents no results from actually simulating the designs that were
+pushed through the tools.  PLSI supports obtaining post-PAR power numbers, but
+the 32nm Synopsys EDK's power models wouldn't be good enough to draw any
+conclusions from.  There's two problems here: the lack of write masks means
+many more SRAM macros are emitted than is reasonable, and I get a lot of
+warnings from the tools about SRAMs not having power models.
 
 \subsection{DRC and LVS Fixing}
 
